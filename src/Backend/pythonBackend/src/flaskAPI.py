@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
 import sqlite3
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)   # Implements Cross-Origin-Ressource-Sharing for all endpoints
 
 def get_db_connection():
     conn = sqlite3.connect('../DB/customer_sales.db')
