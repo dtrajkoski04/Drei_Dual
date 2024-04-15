@@ -41,5 +41,43 @@ def get_customers():
     return jsonify(customers_list)
 
 
+@app.route('/sales_data', methods=['GET'])
+def get_sales_data():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Data for the diagrams
+    query = """
+    SELECT customer_id, first_name, last_name, sales_2021, sales_2022,
+           (sales_2021 + sales_2022) as total_sales
+    FROM customers
+    """
+    cursor.execute(query)
+    sales_data = cursor.fetchall()
+    conn.close()
+
+    # Calculating the total sales for each year
+    total_sales_2021 = sum([row['sales_2021'] for row in sales_data])
+    total_sales_2022 = sum([row['sales_2022'] for row in sales_data])
+
+    # Data for the Pie-Chart
+    sales_shares = [
+        {'customer_id': row['customer_id'], 'name': f"{row['first_name']} {row['last_name']}",
+         '2021_share': row['sales_2021'] / total_sales_2021 * 100,
+         '2022_share': row['sales_2022'] / total_sales_2022 * 100}
+        for row in sales_data
+    ]
+
+    # Data for the Line-Chart
+    sales_development = [
+        {'customer_id': row['customer_id'], 'name': f"{row['first_name']} {row['last_name']}",
+         'sales_over_time': {'2021': row['sales_2021'], '2022': row['sales_2022']}}
+        for row in sales_data
+    ]
+
+    return jsonify({'sales_shares': sales_shares, 'sales_development': sales_development})
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
