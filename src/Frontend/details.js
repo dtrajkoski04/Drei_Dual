@@ -40,7 +40,7 @@ function drawPieChart(data) {
     chart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: data.map(item => item.name),
+            labels: ['2021', '2022'],
             datasets: [{
                 label: 'Sales Share by Year',
                 data: data.map(item => item['2021_share']).concat(data.map(item => item['2022_share'])),
@@ -83,7 +83,7 @@ function drawLineChart(data) {
         data: {
             labels: ['2021', '2022'],
             datasets: data.map((item) => ({
-                label: item.name,
+                label: 'Sales Over Time',
                 data: [item.sales_over_time['2021'], item.sales_over_time['2022']],
                 fill: false,
                 borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.8)`,
