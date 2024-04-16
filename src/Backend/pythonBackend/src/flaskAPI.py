@@ -64,17 +64,24 @@ def get_sales_data():
     sales_data = cursor.fetchall()
     conn.close()
 
-    # Calculating the total sales for each year
-    total_sales_2021 = sum([row['sales_2021'] for row in sales_data])
-    total_sales_2022 = sum([row['sales_2022'] for row in sales_data])
-
-    # Data for the Pie-Chart
-    sales_shares = [
-        {'customer_id': row['customer_id'], 'name': f"{row['first_name']} {row['last_name']}",
-         '2021_share': row['sales_2021'] / total_sales_2021 * 100,
-         '2022_share': row['sales_2022'] / total_sales_2022 * 100}
-        for row in sales_data
-    ]
+    # Recalculate the sales shares
+    sales_shares = []
+    for row in sales_data:
+        total_customer_sales = row['sales_2021'] + row['sales_2022']
+        if total_customer_sales > 0:  # Prevent division by zero
+            sales_shares.append({
+                'customer_id': row['customer_id'],
+                'name': f"{row['first_name']} {row['last_name']}",
+                '2021_share': row['sales_2021'] / total_customer_sales * 100,
+                '2022_share': row['sales_2022'] / total_customer_sales * 100
+            })
+        else:
+            sales_shares.append({
+                'customer_id': row['customer_id'],
+                'name': f"{row['first_name']} {row['last_name']}",
+                '2021_share': 0,
+                '2022_share': 0
+            })
 
     # Data for the Line-Chart
     sales_development = [
@@ -84,6 +91,7 @@ def get_sales_data():
     ]
 
     return jsonify({'sales_shares': sales_shares, 'sales_development': sales_development})
+
 
 
 
