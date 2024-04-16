@@ -13,33 +13,24 @@ def get_db_connection():
 
 @app.route('/customers', methods=['GET'])
 def get_customers():
+    filter_value = request.args.get('filter_value', default="")
+    sort_by = request.args.get('sort_by', default="customer_id")
+    sort_order = request.args.get('sort_order', default="ASC").upper()
+
+    query = """
+    SELECT * FROM customers
+    WHERE first_name LIKE ? OR last_name LIKE ? OR company LIKE ? OR city LIKE ?
+    ORDER BY {} {}
+    """.format(sort_by, sort_order)
+
     conn = get_db_connection()
     cursor = conn.cursor()
-
-    # Start with a basic query
-    query = 'SELECT * FROM customers'
-
-    # Handle sorting
-    sort_by = request.args.get('sort_by')
-    if sort_by:
-        try:
-            cursor.execute(f"SELECT {sort_by} FROM customers LIMIT 1")
-        except sqlite3.OperationalError:
-            return jsonify({'error': f'No such column: {sort_by}'}), 404
-
-        sort_order = request.args.get('sort_order', 'ASC').upper()
-        if sort_order not in ['ASC', 'DESC']:
-            sort_order = 'ASC'
-        query += f' ORDER BY {sort_by} {sort_order}'
-
-    # Execute the query
-    cursor.execute(query)
+    # Using % around filter_value for partial matching
+    cursor.execute(query, ('%' + filter_value + '%', '%' + filter_value + '%', '%' + filter_value + '%', '%' + filter_value + '%'))
     customers = cursor.fetchall()
     conn.close()
 
-    # Convert the results to a list of dicts
-    customers_list = [dict(customer) for customer in customers]
-    return jsonify(customers_list)
+    return jsonify([dict(customer) for customer in customers])
 
 
 @app.route('/sales_data', methods=['GET'])

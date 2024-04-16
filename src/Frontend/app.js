@@ -1,11 +1,13 @@
 document.getElementById('loadData').addEventListener('click', function() {
     const sortBy = document.getElementById('sortBy').value;
     const sortOrder = document.getElementById('sortOrder').value;
-    const filterValue = document.getElementById('filterValue').value;
+    const filterValue = document.getElementById('filterValue').value.trim();
 
+    // Constructing the URL with potential sorting and filtering parameters
     let url = `http://127.0.0.1:5000/customers?sort_by=${sortBy}&sort_order=${sortOrder}`;
     if (filterValue) {
-        url += `&filter=${filterValue}`;  // Assuming backend can handle a generic filter
+        // Appending the filter value to the URL; assuming backend can parse this generic filter
+        url += `&filter_value=${encodeURIComponent(filterValue)}`;
     }
 
     fetch(url)
@@ -19,19 +21,23 @@ document.getElementById('loadData').addEventListener('click', function() {
             const tableBody = document.getElementById('customerTable').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = ''; // Clear previous entries
 
+            // Iterating over each customer and appending data to the table
             data.forEach(customer => {
                 let row = tableBody.insertRow();
                 
-                // Create a button for Customer ID
+                // Inserting customer index, if available
+                row.insertCell().textContent = customer.customer_index;
+                
+                // Creating a button for the Customer ID that redirects to the details page
                 let customerIDButton = document.createElement('button');
                 customerIDButton.textContent = customer.customer_id;
                 customerIDButton.onclick = function() {
                     window.location.href = `details.html?customer_id=${customer.customer_id}`;
                 };
-
-                row.insertCell().textContent = customer.customer_index;
                 let cell = row.insertCell();
                 cell.appendChild(customerIDButton);
+
+                // Inserting other customer details into the table
                 row.insertCell().textContent = customer.first_name;
                 row.insertCell().textContent = customer.last_name;
                 row.insertCell().textContent = customer.company;
