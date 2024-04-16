@@ -44,6 +44,7 @@ def get_customers():
 
 @app.route('/sales_data', methods=['GET'])
 def get_sales_data():
+    customer_id = request.args.get('customer_id')
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -53,7 +54,13 @@ def get_sales_data():
            (sales_2021 + sales_2022) as total_sales
     FROM customers
     """
-    cursor.execute(query)
+
+    if customer_id:
+        query += " WHERE customer_id = ?"
+        cursor.execute(query, (customer_id,))
+    else:
+        cursor.execute(query)
+
     sales_data = cursor.fetchall()
     conn.close()
 

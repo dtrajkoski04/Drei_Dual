@@ -19,23 +19,31 @@ document.getElementById('loadData').addEventListener('click', function() {
             const tableBody = document.getElementById('customerTable').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = ''; // Clear previous entries
 
-            // Populate table with new entries
             data.forEach(customer => {
                 let row = tableBody.insertRow();
-                row.insertCell(0).textContent = customer.customer_index;
-                row.insertCell(1).textContent = customer.customer_id;
-                row.insertCell(2).textContent = customer.first_name;
-                row.insertCell(3).textContent = customer.last_name;
-                row.insertCell(4).textContent = customer.company;
-                row.insertCell(5).textContent = customer.city;
-                row.insertCell(6).textContent = customer.country;
-                row.insertCell(7).textContent = customer.phone1;
-                row.insertCell(8).textContent = customer.phone2;
-                row.insertCell(9).textContent = customer.email;
-                row.insertCell(10).textContent = customer.subscription_date;
-                row.insertCell(11).textContent = customer.website;
-                row.insertCell(12).textContent = customer.sales_2021;
-                row.insertCell(13).textContent = customer.sales_2022;
+                
+                // Create a button for Customer ID
+                let customerIDButton = document.createElement('button');
+                customerIDButton.textContent = customer.customer_id;
+                customerIDButton.onclick = function() {
+                    window.location.href = `details.html?customer_id=${customer.customer_id}`;
+                };
+
+                row.insertCell().textContent = customer.customer_index;
+                let cell = row.insertCell();
+                cell.appendChild(customerIDButton);
+                row.insertCell().textContent = customer.first_name;
+                row.insertCell().textContent = customer.last_name;
+                row.insertCell().textContent = customer.company;
+                row.insertCell().textContent = customer.city;
+                row.insertCell().textContent = customer.country;
+                row.insertCell().textContent = customer.phone1;
+                row.insertCell().textContent = customer.phone2;
+                row.insertCell().textContent = customer.email;
+                row.insertCell().textContent = customer.subscription_date;
+                row.insertCell().textContent = customer.website;
+                row.insertCell().textContent = customer.sales_2021;
+                row.insertCell().textContent = customer.sales_2022;
             });
         })
         .catch(error => {
