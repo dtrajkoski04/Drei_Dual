@@ -3,12 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Customer Data</title>
+    <title>Customer Data Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Complete Customer Data</h1>
-    <button id="loadData">Load Customer Data</button>
+    <h1>Customer Data Viewer</h1>
+    <div>
+        <input type="text" id="filterValue" placeholder="Enter filter value">
+
+        <label for="sortBy">Sort by:</label>
+        <select id="sortBy">
+            <option value="customer_id">Customer ID</option>
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+            <option value="country">Country</option>
+            <option value="company">Company</option>
+        </select>
+
+        <label for="sortOrder">Order:</label>
+        <select id="sortOrder">
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending</option>
+        </select>
+
+        <button id="loadData">Load Data</button>
+    </div>
     <table id="customerTable">
         <thead>
             <tr>

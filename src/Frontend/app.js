@@ -1,5 +1,14 @@
 document.getElementById('loadData').addEventListener('click', function() {
-    fetch('http://127.0.0.1:5000/customers')
+    const sortBy = document.getElementById('sortBy').value;
+    const sortOrder = document.getElementById('sortOrder').value;
+    const filterValue = document.getElementById('filterValue').value;
+
+    let url = `http://127.0.0.1:5000/customers?sort_by=${sortBy}&sort_order=${sortOrder}`;
+    if (filterValue) {
+        url += `&filter=${filterValue}`;  // Assuming backend can handle a generic filter
+    }
+
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
