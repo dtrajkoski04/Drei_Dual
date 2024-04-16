@@ -9,7 +9,15 @@
 <body>
     <h1>Customer Data Viewer</h1>
     <div>
-        <input type="text" id="filterValue" placeholder="Enter name, company, or city">
+        <label for="filterField">Filter by:</label>
+        <select id="filterField">
+            <option value="first_name">Name</option>
+            <option value="city">City</option>
+            <option value="company">Company</option>
+            <option value="last_name">Last Name</option>
+        </select>
+
+        <input type="text" id="filterValue" placeholder="Enter filter value">
 
         <label for="sortBy">Sort by:</label>
         <select id="sortBy">

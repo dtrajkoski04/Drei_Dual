@@ -13,20 +13,27 @@ def get_db_connection():
 
 @app.route('/customers', methods=['GET'])
 def get_customers():
+    filter_type = request.args.get('filter_type', default="first_name")
     filter_value = request.args.get('filter_value', default="")
     sort_by = request.args.get('sort_by', default="customer_id")
     sort_order = request.args.get('sort_order', default="ASC").upper()
 
-    query = """
+    # Validate filter_type to prevent SQL injection
+    valid_filters = ['first_name', 'last_name', 'company', 'city']
+    if filter_type not in valid_filters:
+        return jsonify({'error': 'Invalid filter type provided'}), 400
+
+    # Construct query using safe filter_type
+    query = f"""
     SELECT * FROM customers
-    WHERE first_name LIKE ? OR last_name LIKE ? OR company LIKE ? OR city LIKE ?
-    ORDER BY {} {}
-    """.format(sort_by, sort_order)
+    WHERE {filter_type} LIKE ?
+    ORDER BY {sort_by} {sort_order}
+    """
 
     conn = get_db_connection()
     cursor = conn.cursor()
     # Using % around filter_value for partial matching
-    cursor.execute(query, ('%' + filter_value + '%', '%' + filter_value + '%', '%' + filter_value + '%', '%' + filter_value + '%'))
+    cursor.execute(query, ('%' + filter_value + '%',))
     customers = cursor.fetchall()
     conn.close()
 
