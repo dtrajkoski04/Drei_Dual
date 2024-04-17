@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Data Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Customer Data Viewer</h1>
+    <div>
+        <label for="filterField">Filter by:</label>
+        <select id="filterField">
+            <option value="first_name">Name</option>
+            <option value="city">City</option>
+            <option value="company">Company</option>
+            <option value="last_name">Last Name</option>
+        </select>
+
+        <input type="text" id="filterValue" placeholder="Enter filter value">
+
+        <label for="sortBy">Sort by:</label>
+        <select id="sortBy">
+            <option value="customer_id">Customer ID</option>
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+            <option value="country">Country</option>
+            <option value="company">Company</option>
+        </select>
+
+        <label for="sortOrder">Order:</label>
+        <select id="sortOrder">
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending</option>
+        </select>
+
+        <button id="loadData">Load Data</button>
+    </div>
+    <table id="customerTable">
+        <thead>
+            <tr>
+                <th>Customer Index</th>
+                <th>Customer ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Company</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Phone 1</th>
+                <th>Phone 2</th>
+                <th>Email</th>
+                <th>Subscription Date</th>
+                <th>Website</th>
+                <th>Sales 2021</th>
+                <th>Sales 2022</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
