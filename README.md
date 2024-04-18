@@ -27,26 +27,6 @@ python3 app.py
 
 This command starts the Flask server on `127.0.0.1`.
 
-### Using the Executable Release
-
-1. **Downloading the Release Page:**
-- Navigate to GitHub Repository
-- Click on "Releases"
-- Download the Executable of the Release Version
-
-2. **Running the Executable**
-- **Windows Users:**
-	- Double-click the downloaded .exe file to run the application.
-	-  If a security warning appears, click “More Info” and then “Run Anyway” to proceed.
-- **Mac Users:**
-	- Right-click the downloaded file and select “Open” to bypass the security warning that appears for unrecognized apps.
-- **Linux Users:**
-	- Open a terminal window.
-	-  Navigate to the download directory.
-	- Make the file executable by running chmod +x YourApplicationName.
-
-•  Execute the application by typing ./YourApplicationName.
-
 ### Endpoints
 
 -   **`/`** (Home): Displays the UI for viewing and interacting with customer data.
