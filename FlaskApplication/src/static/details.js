@@ -1,3 +1,4 @@
+// Executes when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Function to extract 'customer_id' from the URL query parameters
     function getQueryParam(param) {
@@ -5,37 +6,40 @@ document.addEventListener('DOMContentLoaded', function() {
         return urlParams.get(param);
     }
 
+    // Retrieves the 'customer_id' from the URL query
     const customerId = getQueryParam('customer_id');
     if (!customerId) {
-        alert('Customer ID is missing!');
+        alert('Customer ID is missing!'); // Alerts if no customer ID is present
         return;
     }
 
+    // Fetches sales data for a specific customer using their 'customer_id'
     fetch(`http://127.0.0.1:5000/sales_data?customer_id=${customerId}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch data: ' + response.statusText);
             }
-            return response.json();
+            return response.json(); // Parses the JSON response into a JavaScript object
         })
         .then(data => {
             if (data.error) {
-                console.error('Error:', data.error);
+                console.error('Error:', data.error); // Logs errors if the data fetch contains errors
                 return;
             }
-            drawPieChart(data.sales_shares);
-            drawLineChart(data.sales_development);
+            drawPieChart(data.sales_shares); // Calls the function to draw a pie chart with the fetched data
+            drawLineChart(data.sales_development); // Calls the function to draw a line chart with the fetched data
         })
         .catch(error => {
-            console.error('Fetch error:', error);
+            console.error('Fetch error:', error); // Catches and logs any fetch errors
         });
 });
 
+// Function to draw a pie chart using Chart.js
 function drawPieChart(data) {
     const ctx = document.getElementById('pieChart').getContext('2d');
-    let chart = Chart.getChart('pieChart'); // Get the chart instance if exists
+    let chart = Chart.getChart('pieChart'); // Attempts to retrieve an existing chart
     if (chart) {
-        chart.destroy(); // Destroy the existing chart instance before creating a new one
+        chart.destroy(); // Destroys existing chart instance if present
     }
     chart = new Chart(ctx, {
         type: 'pie',
@@ -72,11 +76,12 @@ function drawPieChart(data) {
     });
 }
 
+// Function to draw a line chart using Chart.js
 function drawLineChart(data) {
     const ctx = document.getElementById('lineChart').getContext('2d');
-    let chart = Chart.getChart('lineChart'); // Get the chart instance if exists
+    let chart = Chart.getChart('lineChart'); // Attempts to retrieve an existing chart
     if (chart) {
-        chart.destroy(); // Destroy the existing chart instance before creating a new one
+        chart.destroy(); // Destroys existing chart instance if present
     }
     chart = new Chart(ctx, {
         type: 'line',
