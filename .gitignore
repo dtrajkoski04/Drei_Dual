@@ -2,6 +2,45 @@
 .DS_Store
 .idea
 
+
+# Pyinstaller gitignore beginn
+
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*~
+.project
+*.sublime-workspace
+
+# virtual environment
+venv/
+*.venv
+env/
+*.env
+
+
+
 # Node gitingore beginn
 
 # Logs
